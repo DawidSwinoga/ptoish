@@ -13,14 +13,14 @@ public class App {
         Person person = createPerson();
 
         System.out.println(person);
-        System.out.println("Serialization\n");
+        System.out.println("Serialization");
 
         serialize(person, "serialization.ser");
         Person deserializedPerson = deserialize("serialization.ser");
         System.out.println(deserializedPerson);
 
 
-        System.out.println("\n\nExternalization\n");
+        System.out.println("\n\nExternalization");
         Externalizator.externalize(person, "externalization");
         Person externalization = Externalizator.deexternalize(new Person(), "externalization");
         System.out.println(externalization);
