@@ -25,7 +25,7 @@ public class Person implements Serializable, Externalizable {
     }
 
     @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    public void readExternal(ObjectInput in) throws IOException {
         name = in.readUTF();
         lastName = in.readUTF();
         birthday = Instant.ofEpochSecond(in.readLong());
