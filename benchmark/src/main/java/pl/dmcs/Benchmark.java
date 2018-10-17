@@ -4,9 +4,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Created by Dawid on 13.10.2018 at 16:18.
+ * Created by Dawid on 13.10.2018 at 22:46.
  */
-
 public class Benchmark {
     public static final int MIN_INVOKE_COUNT = 1;
     private final static long DEFAULT_INVOKE_COUNT = 100L;

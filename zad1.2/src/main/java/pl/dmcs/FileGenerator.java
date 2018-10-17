@@ -10,7 +10,7 @@ import java.util.Random;
  */
 public class FileGenerator {
     public static void generateFile(String path) {
-        byte[] bytes = new byte[500000000];
+        byte[] bytes = new byte[300000000];
         new Random().nextBytes(bytes);
 
         try (RandomAccessFile stream = new RandomAccessFile(path, "rw");

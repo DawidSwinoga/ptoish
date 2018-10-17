@@ -14,5 +14,9 @@
     <name>zad1.2</name>
     <dependencies>
 
+        <dependency>
+            <groupId>pl.dmcs</groupId>
+            <artifactId>benchmark</artifactId>
+        </dependency>
     </dependencies>
 </project>
