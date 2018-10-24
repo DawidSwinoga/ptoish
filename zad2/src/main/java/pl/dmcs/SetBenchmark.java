@@ -1,11 +1,6 @@
 package pl.dmcs;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,6 +17,7 @@ public class SetBenchmark {
     private Supplier<Set<String>> stingSetSupplier;
     private List<String> data;
     private Set<String> test;
+    private List<String> dataToRemove;
 
     public static void benchmark(Supplier<Set<String>> stingSetSupplier) {
         new SetBenchmark(stingSetSupplier).benchmark();
@@ -42,20 +38,29 @@ public class SetBenchmark {
 
     private void remove(Integer size) {
         shuffle(data);
-        Benchmark.benchmark(() -> doRemove(size), INVOKE_COUNT, size);
+        Benchmark.benchmark(() -> doRemove(), INVOKE_COUNT, size, () -> beforeRemoveTest(size));
     }
 
-    private void doRemove(Integer size) {
-        data.re
+    private void beforeRemoveTest(Integer size) {
+        shuffle(data);
+        test = stingSetSupplier.get();
+        List<String> chosenData = data.subList(0, size);
+        test.addAll(chosenData);
+        shuffle(chosenData);
+        dataToRemove = new ArrayList<>();
+        dataToRemove.addAll(chosenData);
+    }
+
+    private void doRemove() {
+        dataToRemove.forEach(test::remove);
     }
 
     private void benchmarkAdd(Integer size) {
         shuffle(data);
-        Benchmark.benchmark(() -> benchmarkAdd(data.subList(0, size)), INVOKE_COUNT, size);
+        Benchmark.benchmark(() -> benchmarkAdd(data.subList(0, size)), INVOKE_COUNT, size, () -> test = stingSetSupplier.get());
     }
 
     private void benchmarkAdd(List<String> strings) {
-        test = stingSetSupplier.get();
         strings.forEach(test::add);
     }
 

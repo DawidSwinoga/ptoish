@@ -15,24 +15,35 @@ public class Benchmark {
     }
 
     public static void benchmark(Executable executable, long invokeCount) {
-        benchmark(executable, invokeCount, 1);
+        benchmark(executable, invokeCount, 1, () -> {});
     }
 
-    private static void displayResult(Instant start, Instant stop, long invokeCount, int timeDivider) {
-        long duration = Duration.between(start, stop).toNanos();
-        double avgDuration = duration / (double) invokeCount;
-        System.out.println("AVG execution time: " + (avgDuration / timeDivider) + " nanoseconds");
+    private static void displayResult(double avgDuration) {
+
+        System.out.println("AVG execution time: " + (avgDuration) + " nanoseconds");
     }
 
     public static void benchmark(Executable executable, long invokeCount, int timeDivider) {
+        benchmark(executable, invokeCount, timeDivider, () -> {
+
+        });
+    }
+
+    public static void benchmark(Executable executable, long invokeCount, int timeDivider, Runnable beforeTest) {
         long executionCount = invokeCount < MIN_INVOKE_COUNT ? 1 : invokeCount;
 
-        Instant start = Instant.now();
+        long skipTime = 0;
+        long start = System.nanoTime();
         for (int i = 0; i < executionCount; i++) {
+            long skipTimeStart = System.nanoTime();
+            beforeTest.run();
+            skipTime = skipTime + (System.nanoTime() - skipTimeStart);
             executable.execute();
         }
-        Instant stop = Instant.now();
+        long stop = System.nanoTime();
 
-        displayResult(start, stop, invokeCount, timeDivider);
+        long duration = stop - start;
+        double avgDuration = (((duration - skipTime)/ (double) invokeCount) / timeDivider);
+        displayResult(avgDuration);
     }
 }
