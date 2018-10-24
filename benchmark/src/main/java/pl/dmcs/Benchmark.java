@@ -15,6 +15,16 @@ public class Benchmark {
     }
 
     public static void benchmark(Executable executable, long invokeCount) {
+        benchmark(executable, invokeCount, 1);
+    }
+
+    private static void displayResult(Instant start, Instant stop, long invokeCount, int timeDivider) {
+        long duration = Duration.between(start, stop).toNanos();
+        double avgDuration = duration / (double) invokeCount;
+        System.out.println("AVG execution time: " + (avgDuration / timeDivider) + " nanoseconds");
+    }
+
+    public static void benchmark(Executable executable, long invokeCount, int timeDivider) {
         long executionCount = invokeCount < MIN_INVOKE_COUNT ? 1 : invokeCount;
 
         Instant start = Instant.now();
@@ -23,12 +33,6 @@ public class Benchmark {
         }
         Instant stop = Instant.now();
 
-        displayResult(start, stop, invokeCount);
-    }
-
-    private static void displayResult(Instant start, Instant stop, long invokeCount) {
-        long duration = Duration.between(start, stop).toMillis();
-        double avgDuration = duration / (double) invokeCount;
-        System.out.println("AVG execution time: " + avgDuration + " milliseconds");
+        displayResult(start, stop, invokeCount, timeDivider);
     }
 }
