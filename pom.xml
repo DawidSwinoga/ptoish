@@ -14,6 +14,7 @@
         <module>benchmark</module>
         <module>zad1.2</module>
         <module>zad2</module>
+        <module>zad3</module>
     </modules>
 
     <name>ptoish</name>
