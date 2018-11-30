@@ -8,30 +8,27 @@ import java.util.stream.LongStream;
 
 import static java.util.Collections.shuffle;
 
-/**
- * Created by Dawid on 23.10.2018 at 21:34.
- */
-public class SetBenchmark {
+public class QueueBenchmark {
     public static final int INVOKE_COUNT = 50;
     private static List<Integer> setSizes = Arrays.asList(10, 100, 1000, 10000, 100000, 1000000, 1000000);
-    private Supplier<Set<String>> stringSetSupplier;
+    private Supplier<Queue<String>> queueStringsSupplier;
     private List<String> data;
     private Set<String> test;
     private List<String> temporaryData;
 
-    public static void benchmark(Supplier<Set<String>> stingSetSupplier) {
-        new SetBenchmark(stingSetSupplier).benchmark();
+    public static void benchmark(Supplier<Queue<String>> queueStringsSupplier) {
+        new QueueBenchmark(queueStringsSupplier).benchmark();
     }
 
-    public SetBenchmark(Supplier<Set<String>> stingSetSupplier) {
-        this.stringSetSupplier = stingSetSupplier;
+    public QueueBenchmark(Supplier<Queue<String>> queueStringsSupplier) {
+        this.queueStringsSupplier = queueStringsSupplier;
     }
 
     private void benchmark() {
-        System.out.println("Benchmark --- " + stringSetSupplier.get().getClass().getSimpleName() + " ---");
+        System.out.println("Benchmark --- " + queueStringsSupplier.get().getClass().getSimpleName() + " ---");
         generateData();
-        System.out.println("Adding at the beginning");
-        setSizes.forEach(this::benchmarkAddingAtTheBeginning);
+        System.out.println("Add");
+        setSizes.forEach(this::benchmarkAdd);
         System.out.println("Remove");
         setSizes.forEach(this::remove);
         System.out.println("Search / Check if element exist");
@@ -74,7 +71,7 @@ public class SetBenchmark {
         temporaryData.forEach(test::remove);
     }
 
-    private void benchmarkAddingAtTheBeginning(Integer size) {
+    private void benchmarkAdd(Integer size) {
         shuffle(data);
         Benchmark.benchmark(() -> benchmarkAdd(data.subList(0, size)), INVOKE_COUNT, size, () -> test = stringSetSupplier.get());
     }
